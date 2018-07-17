@@ -6,31 +6,31 @@ import datetime
 import sys
 
 def createCreateCron():
-    cron = CronTab(user='matthieulrx')
+    cron = CronTab(user='pi')
     cron.env['SHELL'] = '/bin/bash'
     cron.env['PATH'] = '/usr/bin:/bin'
     
-    job = cron.new(command='python3 /home/matthieulrx/_work/python/cronjob/scheduleCron.py sunset', comment='createMain')
-    job.minute.on(00)
+    job = cron.new(command='python3 /home/pi/pythonproject/scheduleProject/scheduleCron.py sunrise', comment='createSunriseSchedule')
+    job.minute.on(50)
     job.hour.on(17)
     cron.write()
 
 def removeAllCron():
-    cron = CronTab(user='matthieulrx')
+    cron = CronTab(user='pi')
     cron.remove_all()
     cron.write()
 
 # jobName is sunset or sunrise
 def getCommand(jobName):
     if jobName == 'sunset':
-        command = 'python3 /home/matthieulrx/_work/python/cronjob/lighton.py'
+        command = 'python3 /home/pi/pythonproject/scheduleProject/remote.py allLightsOn'
     elif jobName == 'sunrise': 
-        command = 'python3 /home/matthieulrx/_work/python/cronjob/lightoff.py'
+        command = 'python3 /home/pi/pythonproject/scheduleProject/remote.py gardenLightOff'
     return command
 
 # jobName is sunset or sunrise
 def createCron(jobName):
-    cron = CronTab(user='matthieulrx')
+    cron = CronTab(user='pi')
     hh,mm = requestTime.getScheduleTime(jobName).split(':')
     #remove existing job
     for job in cron:
@@ -46,7 +46,7 @@ def createCron(jobName):
 
 
 def listCron():
-    cron = CronTab(user='matthieulrx')
+    cron = CronTab(user='pi')
     for job in cron:
         print(job)
 
